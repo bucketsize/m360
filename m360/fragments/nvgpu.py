@@ -1,4 +1,4 @@
-import subprocess
+from subprocess import Popen
 
 def usage(l):
     if ("gpu" in l) or ("Idx" in l):
@@ -10,9 +10,10 @@ def usage(l):
 
 def co_usage(MTAB={}):
     try: 
-        h = subprocess.Popen(["nvidia-smi", "dmon", "-d", "2", "-s", "pc"], stdout=subprocess.PIPE)
+        h = Popen(["nvidia-smi", "dmon", "-d", "2", "-s", "pc"], stdout=subprocess.PIPE)
     except:
-        yield
+        while True:
+            yield
     while True:
         l = h.stdout.readline().decode("utf-8")
         if not l:

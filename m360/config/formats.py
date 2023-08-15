@@ -51,6 +51,8 @@ Formats = {
 }
 
 def formatvalue(k: str, v) -> str:
+    if not v:
+        return "%s=?" % k
     f = Formats.get(k)
     if not f:
         fk = k.split(":")[-1]

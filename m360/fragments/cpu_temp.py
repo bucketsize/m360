@@ -1,22 +1,22 @@
-import os
+from os.path import exists as path_exists
 
 hwmons = {}
 # intel i5 / amd ryzen 2200 g
 for i in range(0, 127):
     hwmfd = f"/sys/class/hwmon/hwmon{i}/name"
-    if os.path.exists(hwmfd):
+    if path_exists(hwmfd):
         print(f"cpu_temp, checking {hwmfd}")
         with open(hwmfd, "r") as f:
             print(f.read())
         for j in range(0, 127):
             tempfd = f"/sys/class/hwmon/hwmon{i}/temp{j}_label"
-            if os.path.exists(tempfd):
+            if path_exists(tempfd):
                 with open(tempfd, "r") as f:
                     templb = f.read()
                 hwmons[templb] = f"/sys/class/hwmon/hwmon{i}/temp{j}_input"
 
 # pi 4
-if os.path.exists("/sys/class/thermal/thermal_zone0/temp"):
+if path_exists("/sys/class/thermal/thermal_zone0/temp"):
     hwmons["thermal_zone0"] = "/sys/class/thermal/thermal_zone0/temp"
 
 def usage():

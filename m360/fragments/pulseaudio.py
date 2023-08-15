@@ -1,23 +1,23 @@
-import subprocess
-import re
+from subprocess import check_output
+from re import search, findall
 
 def usage():
     na, s, v, st = [], [], [], []
-    output = subprocess.check_output("pactl list sinks 2>&1", shell=True).decode()
+    output = check_output("pactl list sinks 2>&1", shell=True).decode()
     for line in output.split('\n'):
-        n = re.search('Name: (.+)', line)
+        n = search('Name: (.+)', line)
         if n:
             na.append(n.group(1))
-        i = re.search('Sink #(\w+)', line)
+        i = search('Sink #(\w+)', line)
         if i:
             s.append(i.group(1))
-        j = re.search('State: (\w+)', line)
+        j = search('State: (\w+)', line)
         if j:
             st.append(j.group(1))
-        k = re.search('Volume: f.*', line)
+        k = search('Volume: f.*', line)
         if k:
             vol = 0
-            for iv in re.findall('/\s+(\d+)', k.group(0)):
+            for iv in findall('/\s+(\d+)', k.group(0)):
                 vol += int(iv)
             vol /= 2
             v.append(vol)

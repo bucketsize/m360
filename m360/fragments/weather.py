@@ -1,10 +1,9 @@
-import subprocess
 import json
 import requests
 
 def usage():
     OpenWeatherApi="http://api.openweathermap.org/data/2.5/weather?q=bengaluru&appid=%s"
-    OpenWeatherApiKey=Cfg.openweathermap_apikey
+    OpenWeatherApiKey=Cfg['openweathermap_apikey']
     if not OpenWeatherApiKey:
         print("WARN :: OpenWeatherApiKey not defined!")
         OpenWeatherApiKey = "__UNKNOWN__"
@@ -21,7 +20,7 @@ def usage():
 
 def co_usage(MTAB={}):
     while True:
-        t,h,s=weather()
+        t,h,s=usage()
         MTAB['weather_temperature']=t
         MTAB['weather_humidity']=h
         MTAB['weather_summary']=s

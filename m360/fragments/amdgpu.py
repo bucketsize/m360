@@ -1,3 +1,5 @@
+from re import search
+
 def usage():
     try:
         with open('/sys/class/drm/card0/device/mem_info_vram_used', 'r') as f:
@@ -16,14 +18,14 @@ def usage():
     except:
         result = None 
     if result is not None:
-        tgpu = int(re.search(r'GPU Temperature: (\d+) C', result).group(1))
-        clkm = int(re.search(r'\s+(\d+) MHz\s+\ZMCLK', result).group(1))
-        clks = int(re.search(r'\s+(\d+) MHz\s+\ZSCLK', result).group(1))
+        tgpu = int(search(r'GPU Temperature: (\d+) C', result).group(1))
+        clkm = int(search(r'\s+(\d+) MHz\s+\ZMCLK', result).group(1))
+        clks = int(search(r'\s+(\d+) MHz\s+\ZSCLK', result).group(1))
     return vram, vram_used, tgpu, clkm, clks
 
 def co_usage(MTAB={}):
     while True:
-        vram, vram_used, tgpu, gmf, gsf = gpu_usage()
+        vram, vram_used, tgpu, gmf, gsf = usage()
         if vram:
             MTAB['gpu_id'] = "amd"
             MTAB['amd:gpu_mem'] = vram / 1000000

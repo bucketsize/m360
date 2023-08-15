@@ -1,5 +1,3 @@
-import os
-
 def usage():
     try:
         with open("/sys/class/power_supply/BAT0/capacity") as f:

@@ -3,15 +3,18 @@
 import os
 import asyncio
 from m360.config.formats import formatvalue 
-from m360.fragments import cpu
-from m360.fragments import cpu_temp 
-from m360.fragments import cpu_freq 
-from m360.fragments import mem 
-from m360.fragments import battery 
-from m360.fragments import disk 
-from m360.fragments import net 
-from m360.fragments import nvgpu 
-
+from m360.fragments import (
+    cpu,
+    cpu_temp, 
+    cpu_freq,
+    mem, 
+    battery, 
+    disk, 
+    net, 
+    nvgpu,
+    amdgpu,
+    process
+)
 from m360.writers import lemonbar
 
 EPOC = 1
@@ -26,6 +29,8 @@ gs = [
     disk.co_usage(MTAB),
     net.co_usage(MTAB),
     nvgpu.co_usage(MTAB),
+    amdgpu.co_usage(MTAB),
+    process.co_usage(MTAB),
 
     # writers
     lemonbar.co_usage(MTAB),
@@ -33,6 +38,7 @@ gs = [
 
 async def runloop():
     while True:
+        print("\n==")
         for g in gs:
             next(g)
         for k, v in MTAB.items():

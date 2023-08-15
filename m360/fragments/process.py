@@ -1,10 +1,10 @@
-import subprocess
-import re
+from subprocess import check_output
+from re import compile
 
-reps = re.compile("(\w+)\s+(\w+)\s+(\d+.\d+)\s+(\d+.\d+)\s+([\w\s\-]+)")
+reps = compile("(\w+)\s+(\w+)\s+(\d+.\d+)\s+(\d+.\d+)\s+([\w\s\-]+)")
 def usage():
     t=[]
-    result = subprocess.check_output(["ps", "-Ao", "user,pid,pcpu,pmem,comm", "--sort=-pcpu"]).decode('utf-8').split('\n')[:6]
+    result = check_output(["ps", "-Ao", "user,pid,pcpu,pmem,comm", "--sort=-pcpu"]).decode('utf-8').split('\n')[:6]
     print(result[1:])
     for line in result[1:]:
         user,pid,pcpu,pmem,comm=reps.match(line).groups()
@@ -19,7 +19,7 @@ def usage():
 
 def co_usage(MTAB={}):
     while True:
-        m=ps_top()
+        m=usage()
         for i,p in enumerate(m):
             MTAB[f'p{i+1}_pid'] = p['pid']
             MTAB[f'p{i+1}_pcpu'] = p['pcpu']

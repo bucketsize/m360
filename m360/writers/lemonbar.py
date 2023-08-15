@@ -39,4 +39,5 @@ def co_usage(mtab: {}):
     with io.open("/tmp/m360.lemonbar.out." + user, "w") as hout:
         while True:
             hout.write(statusline(mtab))
+            hout.flush()
             yield

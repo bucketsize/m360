@@ -1,5 +1,3 @@
-import os 
-
 def usage():
     rf, rt, sf, st = 0, 0, 0, 0
     with open('/proc/meminfo', 'r') as f:

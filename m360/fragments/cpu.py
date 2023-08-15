@@ -1,5 +1,4 @@
-import os
-import time
+from time import strftime
 
 def usage():
     with open("/proc/stat", "r") as handle:
@@ -20,7 +19,7 @@ def co_usage(MTAB={}):
         s0, z0 = s, z
         MTAB['cpu'] = c * 100
         MTAB['cpu_level'] = c * 5
-        MTAB['time'] = time.strftime("%Y-%m-%dT%H:%M:%S+05:30")
+        MTAB['time'] = strftime("%Y-%m-%dT%H:%M:%S+05:30")
         # alert.check('cpu', c * 100)
         yield
 
