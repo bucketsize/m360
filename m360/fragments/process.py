@@ -24,8 +24,8 @@ def co_usage(MTAB={}):
     while True:
         m=usage()
         for i,p in enumerate(m):
-            MTAB[f'p{i+1}_pid'] = p['pid']
-            MTAB[f'p{i+1}_pcpu'] = p['pcpu']
-            MTAB[f'p{i+1}_pmem'] = p['pmem']
-            MTAB[f'p{i+1}_name'] = p['comm']
+            MTAB[f'{i}:pid'] = p['pid']
+            MTAB[f'{i}:pcpu'] = p['pcpu']
+            MTAB[f'{i}:pmem'] = p['pmem']
+            MTAB[f'{i}:name'] = p['comm']
         yield

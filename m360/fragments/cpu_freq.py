@@ -19,7 +19,7 @@ def co_usage(MTAB={}):
         freq = usage()
         sfreq, s = 0, 1
         for i, v in enumerate(freq):
-            MTAB[str(i-1)+':cpu_freq'] = v
+            MTAB[f'{i}:cpu_freq'] = v
             sfreq += v
             s = i
         MTAB["m:cpu_freq"] = sfreq/s

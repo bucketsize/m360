@@ -13,7 +13,7 @@ def usage():
         for l in f.readlines():
             m = search(net_stat_pat, l)
             if m:
-                devices.append((m.group(1),
+                devices.append((m.group(1)[:-1],
                                 int(m.group(2)),
                                 0))
     with open("/proc/net/wireless", "r") as f:

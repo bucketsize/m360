@@ -16,6 +16,7 @@ from m360.fragments import (
     process
 )
 from m360.writers import lemonbar
+from m360.writers import logger
 
 EPOC = 1
 MTAB = {}
@@ -34,13 +35,13 @@ gs = [
 
     # writers
     lemonbar.co_usage(MTAB),
+    logger.co_usage(MTAB),
 ]
 
 async def runloop():
     while True:
         for g in gs:
             next(g)
-        print(map(lambda k,v: (k, formatvalue(v)), MTAB.items()))     
         await asyncio.sleep(EPOC)
 
 def main():
