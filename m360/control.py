@@ -38,11 +38,9 @@ gs = [
 
 async def runloop():
     while True:
-        print("\n==")
         for g in gs:
             next(g)
-        for k, v in MTAB.items():
-            print(k, formatvalue(k, v))
+        print(map(lambda k,v: (k, formatvalue(v)), MTAB.items()))     
         await asyncio.sleep(EPOC)
 
 def main():

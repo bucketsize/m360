@@ -5,9 +5,12 @@ reps = compile("(\w+)\s+(\w+)\s+(\d+.\d+)\s+(\d+.\d+)\s+([\w\s\-]+)")
 def usage():
     t=[]
     result = check_output(["ps", "-Ao", "user,pid,pcpu,pmem,comm", "--sort=-pcpu"]).decode('utf-8').split('\n')[:6]
-    print(result[1:])
+    # print(result[1:])
     for line in result[1:]:
-        user,pid,pcpu,pmem,comm=reps.match(line).groups()
+        m = reps.match(line)
+        if not m:
+            pass
+        user,pid,pcpu,pmem,comm=m.groups()
         r={}
         r['user']=user
         r['comm']=comm

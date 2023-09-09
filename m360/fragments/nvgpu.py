@@ -1,4 +1,4 @@
-from subprocess import Popen
+from subprocess import Popen, PIPE
 
 def usage(l):
     if ("gpu" in l) or ("Idx" in l):
@@ -10,8 +10,9 @@ def usage(l):
 
 def co_usage(MTAB={}):
     try: 
-        h = Popen(["nvidia-smi", "dmon", "-d", "2", "-s", "pc"], stdout=subprocess.PIPE)
-    except:
+        h = Popen(["nvidia-smi", "dmon", "-d", "2", "-s", "pc"], stdout=PIPE)
+    except Exception as e:
+        print('#nvgpu, error', e)
         while True:
             yield
     while True:

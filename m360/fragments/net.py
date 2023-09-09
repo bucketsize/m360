@@ -1,33 +1,52 @@
 from subprocess import check_output
 from re import search
-from time import process_time
+from time import process_time, sleep
+
+net_stat_pat = r"(\w+:)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)"
+wls_stat_pat = r"(\w+:)\s+(\d+)\s+(\d+).\s+(.\d+)."
 
 def usage():
-    try:
-        output = check_output(["ip", "route"]).decode()
-        match = search(r"default via (\d+\.\d+\.\d+\.\d+) dev (\w+)", output)
-        if match is None:
-            return "?", "?", "?", 0, 0
-        net_stat_pat = match.group(2) + ": (.+)\n"
-        with open("/proc/net/dev", "r") as f:
-            r2 = f.read()
-        r3 = search(net_stat_pat, r2).group(1)
-        t = [int(i) for i in r3.split()]
-        return match.group(1), match.group(2), "?", t[0], t[8]
-    except:
-        return "?", "?", "?", 0, 0
+    default:str=""
+    devices:[(str,int,int)]=[]
+    wireless: [(str,int,int,int)]=[]
+    with open("/proc/net/dev", "r") as f:
+        for l in f.readlines():
+            m = search(net_stat_pat, l)
+            if m:
+                devices.append((m.group(1),
+                                int(m.group(2)),
+                                0))
+    with open("/proc/net/wireless", "r") as f:
+        for l in f.readlines():
+            m = search(wls_stat_pat, l)
+            if m:
+                wireless.append((m.group(1),
+                            int(m.group(2)),
+                            int(m.group(3)),
+                            0))
+    return default, devices, wireless
 
 def co_usage(MTAB={}):
-    tx0, rx0 = 0, 0
+    tx0, rx0, devc = 0, 0, ""
     while True:
-        gw, dev, proto, tx, rx = usage()
-        ts, rs = (tx-tx0)/process_time(), (rx-rx0)/process_time()
-        tx0, rx0 = tx, rx
-        MTAB['net_gateway'] = gw
-        MTAB['net_device'] = dev
-        MTAB['net_proto'] = proto
-        MTAB['net_tx'] = tx/100
-        MTAB['net_rx'] = rx/100
-        MTAB['net_ts'] = ts/100
-        MTAB['net_rs'] = rs/100
+        defdev, devices, wireless = usage()
+        for i, j in enumerate(devices):
+            ix = str(i)
+            dev, tx, rx = j
+            ts, rs = (tx-tx0)/process_time(), (rx-rx0)/process_time()
+            tx0, rx0 = tx, rx
+            if ts > 0:
+                devc = dev
+            MTAB[ix+':net_device'] = dev
+            MTAB[ix+':net_tx'] = tx/100
+            MTAB[ix+':net_rx'] = rx/100
+            MTAB[ix+':net_ts'] = ts/100
+            MTAB[ix+':net_rs'] = rs/100
+        MTAB['net_gateway'] = devc
         yield
+
+if __name__ == '__main__':
+    m={}
+    for i in co_usage(m):
+        print(m)
+        sleep(1)
