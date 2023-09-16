@@ -4,34 +4,27 @@ from time import strftime
 from m360.config.sym import ascii as sym
 from m360.config.formats import formatvalue 
 
-def fmtab(mtab: {}, key: str) -> str:
-    if key in mtab:
-        return formatvalue(key, mtab[key])
-    return "?"
-
-def fsym(s, k):
-    if k in s:
-        return s[k]
-    return k+"_?"
+mget = lambda m, k: m[k] if k in m else k
+fget = lambda m, k: formatvalue(k, m[k]) if k in m else "?"
 
 def statusline(mtab: {}) -> str:
     return "%%{l} %s%s %%{c}...%%{r} %s%s %s%s | %s%s | %s%s | %s%s | %s%s | %s%s\n" % (
         sym["clock"],
         strftime("%a %b %d, %Y | %H:%M:%S"),
         sym["cpu"],
-        fmtab(mtab, "cpu"),
+        fget(mtab, "cpu"),
         sym["cpu_temp"],
-        fmtab(mtab, "cpu_temp"),
-        fsym(sym, "gpu_"+fmtab(mtab, "gpu_id")),
-        fmtab(mtab, "gpu"),
+        fget(mtab, "cpu_temp"),
+        mget(sym,  mget(mtab, 'gpu_id')+":gpu"),
+        fget(mtab, mget(mtab, 'gpu_id')+":gpu_temp"),
         sym["mem"],
-        fmtab(mtab, "mem"),
+        fget(mtab, "mem"),
         sym["audio"],
-        fmtab(mtab, "audio"),
+        fget(mtab, "vol"),
         sym["net"],
-        fmtab(mtab, "net_gateway"),
-        fsym(sym, "bat_"+fmtab(mtab, "battery_status").lower()),
-        fmtab(mtab, "battery"),
+        fget(mtab, "net_gateway"),
+        mget(sym, "bat_"+fget(mtab, "battery_status").lower()),
+        fget(mtab, "battery"),
     )
 
 def co_usage(mtab: {}):

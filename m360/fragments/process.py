@@ -6,9 +6,9 @@ def usage():
     t=[]
     result = check_output(["ps", "-Ao", "user,pid,pcpu,pmem,comm", "--sort=-pcpu"]).decode('utf-8').split('\n')[:6]
     # print(result[1:])
-    for line in result[1:]:
+    for line in result[1:5]:
         m = reps.match(line)
-        if not m:
+        if m == None or m.groups() == None:
             pass
         user,pid,pcpu,pmem,comm=m.groups()
         r={}

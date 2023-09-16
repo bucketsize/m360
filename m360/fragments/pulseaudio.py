@@ -25,7 +25,7 @@ def usage():
 
 def co_usage(MTAB={}):
     while True:
-        r = vol_usage_m()
+        r = usage()
         n, s, v, st = r['names'], r['sinks'], r['vols'], r['states'] 
         for i, sink in enumerate(s):
             MTAB[sink+':vol'] = v[i]

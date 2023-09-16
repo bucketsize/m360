@@ -13,7 +13,8 @@ from m360.fragments import (
     net, 
     nvgpu,
     amdgpu,
-    process
+    process,
+    pulseaudio
 )
 from m360.writers import lemonbar
 from m360.writers import logger
@@ -32,6 +33,7 @@ gs = [
     nvgpu.co_usage(MTAB),
     amdgpu.co_usage(MTAB),
     process.co_usage(MTAB),
+    pulseaudio.co_usage(MTAB),
 
     # writers
     lemonbar.co_usage(MTAB),

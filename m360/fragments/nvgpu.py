@@ -26,7 +26,6 @@ def co_usage(MTAB={}):
             MTAB['nv:gpu_mem_used'] = vram_used / 1000000
             MTAB['nv:gpu_mem_used_pc'] = vram_used * 100 / vram
             MTAB['nv:gpu_temp'] = tgpu
-            MTAB['nv:gpu_temp'] = tgpu
             MTAB['nv:gpu_mclk'] = gmf
             MTAB['nv:gpu_sclk'] = gsf
             MTAB['nv:gpu_pwr'] = pwr
