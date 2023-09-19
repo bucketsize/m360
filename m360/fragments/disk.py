@@ -1,6 +1,7 @@
 from os import walk
 from os.path import join
 from re import search, findall
+from asyncio import sleep as asleep
 
 discstat_files = []
 for root, _, files in walk("/sys/devices"):
@@ -25,7 +26,7 @@ def usage():
             pass
     return du
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         du = usage()
         for dui in du:
@@ -33,5 +34,5 @@ def co_usage(MTAB={}):
             MTAB[l+':discio_r'] = r // 1000
             MTAB[l+':discio_w'] = w // 1000
             MTAB[l+':discio'] = (r+w) // 1000
-        yield
+        await asleep(1)
 

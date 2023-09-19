@@ -1,5 +1,6 @@
 import json
 import requests
+from asyncio import sleep as asleep
 
 def usage():
     OpenWeatherApi="http://api.openweathermap.org/data/2.5/weather?q=bengaluru&appid=%s"
@@ -18,10 +19,10 @@ def usage():
     humidity = float(res["main"]["humidity"])
     return temperature, humidity, summary
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         t,h,s=usage()
         MTAB['weather_temperature']=t
         MTAB['weather_humidity']=h
         MTAB['weather_summary']=s
-        yield
+        await asleep(1)

@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
-import asyncio
 from m360.config.formats import formatvalue 
 from m360.fragments import (
     cpu,
@@ -18,34 +17,28 @@ from m360.fragments import (
 )
 from m360.writers import lemonbar
 from m360.writers import logger
+import asyncio
 
-EPOC = 1
-MTAB = {}
+async def entry_point():
+    MTAB = {}
+    await asyncio.gather(
+        cpu.co(MTAB),
+        cpu_temp.co(MTAB),
+        cpu_freq.co(MTAB),
+        mem.co(MTAB),
+        battery.co(MTAB),
+        disk.co(MTAB),
+        net.co(MTAB),
+        nvgpu.co(MTAB),
+        amdgpu.co(MTAB),
+        process.co(MTAB),
+        pulseaudio.co(MTAB),
 
-gs = [
-    cpu.co_usage(MTAB),
-    cpu_temp.co_usage(MTAB),
-    cpu_freq.co_usage(MTAB),
-    mem.co_usage(MTAB),
-    battery.co_usage(MTAB),
-    disk.co_usage(MTAB),
-    net.co_usage(MTAB),
-    nvgpu.co_usage(MTAB),
-    amdgpu.co_usage(MTAB),
-    process.co_usage(MTAB),
-    pulseaudio.co_usage(MTAB),
+        # writers
+        lemonbar.co(MTAB),
+        logger.co(MTAB),
+    )
 
-    # writers
-    lemonbar.co_usage(MTAB),
-    logger.co_usage(MTAB),
-]
-
-async def runloop():
-    while True:
-        for g in gs:
-            next(g)
-        await asyncio.sleep(EPOC)
-
-def main():
-    asyncio.run(runloop())
+def main(epoc=1):
+    asyncio.run(entry_point())
     print("daemon exited ... ")

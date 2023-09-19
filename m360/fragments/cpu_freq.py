@@ -1,4 +1,5 @@
 from os.path import isfile
+from asyncio import sleep as asleep
 
 cpufreq_files = []
 for cpu in range(0, 127):
@@ -14,7 +15,7 @@ def usage():
             freq.append(int(result)/1000) # -> MHz
     return freq
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         freq = usage()
         sfreq, s = 0, 1
@@ -23,4 +24,4 @@ def co_usage(MTAB={}):
             sfreq += v
             s = i
         MTAB["m:cpu_freq"] = sfreq/s
-        yield
+        await asleep(1)

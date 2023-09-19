@@ -1,4 +1,5 @@
 from time import strftime
+from asyncio import sleep as asleep
 
 def usage():
     with open("/proc/stat", "r") as handle:
@@ -11,7 +12,7 @@ def usage():
     z1 = t[3]
     return s1, z1
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     s0, z0, c = 0, 0, 0
     while True:
         s, z = usage()
@@ -21,5 +22,4 @@ def co_usage(MTAB={}):
         MTAB['cpu_level'] = c * 5
         MTAB['time'] = strftime("%Y-%m-%dT%H:%M:%S+05:30")
         # alert.check('cpu', c * 100)
-        yield
-
+        await asleep(1)

@@ -1,4 +1,5 @@
 from re import search
+from asyncio import sleep as asleep
 
 def usage():
     try:
@@ -23,7 +24,7 @@ def usage():
         clks = int(search(r'\s+(\d+) MHz\s+\ZSCLK', result).group(1))
     return vram, vram_used, tgpu, clkm, clks
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         vram, vram_used, tgpu, gmf, gsf = usage()
         if vram:
@@ -35,4 +36,4 @@ def co_usage(MTAB={}):
             MTAB['amd:gpu_temp'] = tgpu
             MTAB['amd:gpu_mclk'] = gmf
             MTAB['amd:gpu_sclk'] = gsf
-        yield
+        await asleep(1) 

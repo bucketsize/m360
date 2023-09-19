@@ -1,6 +1,7 @@
 from subprocess import check_output
 from re import search
 from time import process_time, sleep
+from asyncio import sleep as asleep
 
 net_stat_pat = r"(\w+:)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)\s+(\d+)"
 wls_stat_pat = r"(\w+:)\s+(\d+)\s+(\d+).\s+(.\d+)."
@@ -26,7 +27,7 @@ def usage():
                             0))
     return default, devices, wireless
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     tx0, rx0, devc = 0, 0, ""
     while True:
         defdev, devices, wireless = usage()
@@ -43,7 +44,7 @@ def co_usage(MTAB={}):
             MTAB[ix+':net_ts'] = ts/100
             MTAB[ix+':net_rs'] = rs/100
         MTAB['net_gateway'] = devc
-        yield
+        await asleep(1)
 
 if __name__ == '__main__':
     m={}

@@ -1,5 +1,6 @@
 from subprocess import check_output
 from re import compile
+from asyncio import sleep as asleep
 
 reps = compile("(\w+)\s+(\w+)\s+(\d+.\d+)\s+(\d+.\d+)\s+([\w\s\-]+)")
 def usage():
@@ -9,7 +10,7 @@ def usage():
     for line in result[1:5]:
         m = reps.match(line)
         if m == None or m.groups() == None:
-            pass
+            continue 
         user,pid,pcpu,pmem,comm=m.groups()
         r={}
         r['user']=user
@@ -20,7 +21,7 @@ def usage():
         t.append(r)
     return t
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         m=usage()
         for i,p in enumerate(m):
@@ -28,4 +29,4 @@ def co_usage(MTAB={}):
             MTAB[f'{i}:pcpu'] = p['pcpu']
             MTAB[f'{i}:pmem'] = p['pmem']
             MTAB[f'{i}:name'] = p['comm']
-        yield
+        await asleep(1)

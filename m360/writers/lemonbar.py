@@ -3,6 +3,7 @@ import io
 from time import strftime
 from m360.config.sym import ascii as sym
 from m360.config.formats import formatvalue 
+from asyncio import sleep as asleep
 
 mget = lambda m, k: m[k] if k in m else k
 fget = lambda m, k: formatvalue(k, m[k]) if k in m else "?"
@@ -27,10 +28,10 @@ def statusline(mtab: {}) -> str:
         fget(mtab, "battery"),
     )
 
-def co_usage(mtab: {}):
+async def co(mtab: {}):
     user = os.getenv("USER")
     with io.open("/tmp/m360.lemonbar.out." + user, "w") as hout:
         while True:
             hout.write(statusline(mtab))
             hout.flush()
-            yield
+            await asleep(1) 

@@ -1,4 +1,5 @@
-from subprocess import Popen, PIPE
+from asyncio import sleep as asleep
+from asyncio.subprocess import create_subprocess_exec, PIPE
 
 def usage(l):
     if ("gpu" in l) or ("Idx" in l):
@@ -8,18 +9,20 @@ def usage(l):
     vram = 1 
     return vram, vram_used, int(tgpu), int(clkm), int(clks), pwr
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     try: 
-        h = Popen(["nvidia-smi", "dmon", "-d", "2", "-s", "pc"], stdout=PIPE)
+        h = await create_subprocess_exec("nvidia-smi", "dmon", "-d", "2", "-s", "pc", stdout=PIPE)
     except Exception as e:
         print('#nvgpu, error', e)
         while True:
-            yield
+            await asleep(1)
     while True:
-        l = h.stdout.readline().decode("utf-8")
+        l = (await h.stdout.readline()).decode("utf-8")
         if not l:
-            return
+            await asleep(1)
+            continue
         vram, vram_used, tgpu, gmf, gsf, pwr = usage(l)
+        # print('#nvgpu:', vram, tgpu, pwr)
         if vram:
             MTAB['gpu_id'] = "nv"
             MTAB['nv:gpu_mem'] = vram / 1000000
@@ -29,4 +32,4 @@ def co_usage(MTAB={}):
             MTAB['nv:gpu_mclk'] = gmf
             MTAB['nv:gpu_sclk'] = gsf
             MTAB['nv:gpu_pwr'] = pwr
-        yield
+        await asleep(1)

@@ -1,4 +1,5 @@
 from os.path import exists as path_exists
+from asyncio import sleep as asleep
 
 hwmons = {}
 # intel i5 / amd ryzen 2200 g
@@ -41,7 +42,7 @@ def usage():
         return ts['thermal_zone0'] / 1000
 
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         MTAB['cpu_temp'] = usage()
-        yield
+        await asleep(1)

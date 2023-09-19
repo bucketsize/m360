@@ -1,3 +1,4 @@
+from asyncio import sleep as asleep
 def usage():
     try:
         with open("/sys/class/power_supply/BAT0/capacity") as f:
@@ -11,9 +12,9 @@ def usage():
             status = "AC"
     return int(cap), status
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         level, status = usage()
         MTAB['battery_status'] = status
         MTAB['battery'] = level
-        yield
+        await asleep(1)

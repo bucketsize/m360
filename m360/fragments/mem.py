@@ -1,3 +1,4 @@
+from asyncio import sleep as asleep
 def usage():
     rf, rt, sf, st = 0, 0, 0, 0
     with open('/proc/meminfo', 'r') as f:
@@ -13,9 +14,9 @@ def usage():
                 sf = int(line.split()[1])
     return 1 - rf/rt, 1 - sf/st
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         ram,swap = usage()
         MTAB['mem'] = ram * 100
         MTAB['mem_level'] = ram * 5
-        yield
+        await asleep(1)

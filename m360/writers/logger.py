@@ -3,8 +3,9 @@ import io
 from time import strftime
 from m360.config.sym import ascii as sym
 from m360.config.formats import formatvalue 
+from asyncio import sleep as asleep
 
-def co_usage(mtab: {}):
+async def co(mtab: {}):
     user = os.getenv("USER")
     sk = list(mtab.keys())
     sk.sort()
@@ -15,4 +16,4 @@ def co_usage(mtab: {}):
                 hout.write(f"{k}={mtab[k]},")
             hout.write("}\n")
             hout.flush()
-            yield
+            await asleep(1) 

@@ -11,15 +11,14 @@ from m360.fragments import pulseaudio
 
 from m360.control import main
 
-print("cpu", cpu.usage())
-print("cpu_freq", cpu_freq.usage())
-print("cpu_temp", cpu_temp.usage())
-print("mem", mem.usage())
-print("disk", disk.usage())
-print("net", net.usage())
-print("battery", battery.usage())
-print("process", process.usage())
-print("pulseaudio", pulseaudio.usage())
-
+# print("cpu", cpu.usage())
+# print("cpu_freq", cpu_freq.usage())
+# print("cpu_temp", cpu_temp.usage())
+# print("mem", mem.usage())
+# print("disk", disk.usage())
+# print("net", net.usage())
+# print("battery", battery.usage())
+# print("process", process.usage())
+# print("pulseaudio", pulseaudio.usage())
 
 main()

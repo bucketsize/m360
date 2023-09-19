@@ -1,5 +1,6 @@
 from subprocess import check_output
 from re import search, findall
+from asyncio import sleep as asleep
 
 def usage():
     na, s, v, st = [], [], [], []
@@ -23,7 +24,7 @@ def usage():
             v.append(vol)
     return {'names': na, 'sinks': s, 'vols': v, 'states': st}
 
-def co_usage(MTAB={}):
+async def co(MTAB={}):
     while True:
         r = usage()
         n, s, v, st = r['names'], r['sinks'], r['vols'], r['states'] 
@@ -36,4 +37,4 @@ def co_usage(MTAB={}):
                 MTAB['vol_level'] = v[i]*0.05
                 MTAB['snd_live'] = st[i]
                 MTAB['pa_sink'] = sink
-        yield None
+        await asleep(1)
