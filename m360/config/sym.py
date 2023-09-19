@@ -32,8 +32,8 @@ glyps = {
 ascii = {
     'cpu': 'Cpu',
     'gpu': 'Gpu',
-    'nv:gpu': 'Nv',
-    'amd:gpu': 'Amd',
+    'nv:gpu': 'Nv ',
+    'amd:gpu': 'Amd ',
     'mem': 'Mem',
     'eth': 'Enp ',
     'wln': 'Wlp ',
@@ -42,6 +42,7 @@ ascii = {
     'disc': 'Df',
     'clock': '',
     'bat': 'Bat ',
+    'bat_full': 'B* ',
     'bat_not_charging': 'B! ',
     'bat_charging': 'B+ ',
     'bat_discharging': 'B- ',
