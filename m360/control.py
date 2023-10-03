@@ -15,8 +15,7 @@ from m360.fragments import (
     process,
     pulseaudio
 )
-from m360.writers import lemonbar
-from m360.writers import logger
+from m360.writers import lemonbar, swaybar, logger
 import asyncio
 
 async def entry_point():
@@ -36,6 +35,7 @@ async def entry_point():
 
         # writers
         lemonbar.co(MTAB),
+        swaybar.co(MTAB),
         logger.co(MTAB),
     )
 
