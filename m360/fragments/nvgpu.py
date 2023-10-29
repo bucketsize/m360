@@ -13,7 +13,7 @@ async def co(MTAB={}):
     try: 
         h = await create_subprocess_exec("nvidia-smi", "dmon", "-d", "2", "-s", "pc", stdout=PIPE)
     except Exception as e:
-        print('#nvgpu, error', e)
+        print('#nvgpu, error, continue with dummy', e)
         while True:
             await asleep(1)
     while True:

@@ -12,6 +12,8 @@ def usage():
                 st = int(line.split()[1])
             elif 'SwapFree' in line:
                 sf = int(line.split()[1])
+        if st == 0: # swap disabled
+            st = 1
     return 1 - rf/rt, 1 - sf/st
 
 async def co(MTAB={}):
