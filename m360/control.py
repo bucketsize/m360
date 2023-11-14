@@ -13,32 +13,21 @@ from m360.fragments import (
     nvgpu,
     amdgpu,
     process,
-    pulseaudio
+    pulseaudio,
+    div
 )
 from m360.writers import lemonbar, swaybar, logger, udp
 import asyncio
 
 async def entry_point():
+    cors = [div, cpu, cpu_temp, cpu_freq,mem,disk,battery,net,amdgpu,nvgpu,process,pulseaudio,lemonbar,logger,udp]
     MTAB = {}
-    await asyncio.gather(
-        cpu.co(MTAB),
-        cpu_temp.co(MTAB),
-        cpu_freq.co(MTAB),
-        mem.co(MTAB),
-        battery.co(MTAB),
-        disk.co(MTAB),
-        net.co(MTAB),
-        nvgpu.co(MTAB),
-        amdgpu.co(MTAB),
-        process.co(MTAB),
-        pulseaudio.co(MTAB),
-
-        # writers
-        lemonbar.co(MTAB),
-        swaybar.co(MTAB),
-        logger.co(MTAB),
-        udp.co(MTAB),
-    )
+    cots = map(lambda x: asyncio.create_task(x.co(MTAB)), cors)
+    for ts in list(cots):
+        try:
+            await ts 
+        except Exception as e:
+            print("EE", ts, e)
 
 def main(epoc=1):
     asyncio.run(entry_point())

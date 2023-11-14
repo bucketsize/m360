@@ -13,6 +13,7 @@ def usage():
     return s1, z1
 
 async def co(MTAB={}):
+    print("started cpu")
     s0, z0, c = 0, 0, 0
     while True:
         s, z = usage()

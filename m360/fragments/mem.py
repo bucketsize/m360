@@ -17,6 +17,7 @@ def usage():
     return 1 - rf/rt, 1 - sf/st
 
 async def co(MTAB={}):
+    print("started mem")
     while True:
         ram,swap = usage()
         MTAB['mem'] = ram * 100

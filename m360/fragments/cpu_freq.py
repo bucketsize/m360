@@ -16,6 +16,7 @@ def usage():
     return freq
 
 async def co(MTAB={}):
+    print("started cpu_freq")
     while True:
         freq = usage()
         sfreq, s = 0, 1

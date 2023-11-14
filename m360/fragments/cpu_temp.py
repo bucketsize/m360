@@ -43,6 +43,7 @@ def usage():
 
 
 async def co(MTAB={}):
+    print("started cpu_temp")
     while True:
         MTAB['cpu_temp'] = usage()
         await asleep(1)
